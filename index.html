@@ -116,7 +116,7 @@
                 try {
                     const csvdata = parseCSV(await getCSVData());
                     if (csvdata.length <= newquestionId) {
-                        setQuestion("You're all done!");
+                        setQuestion("סיימת!");
                         setShowAnswer(false);
                         return;
                     }
@@ -136,10 +136,9 @@
 
             const handleAnswerSubmit = async () => {
                 if (userAnswer.toLowerCase() === answer.toLowerCase()) {
-                    alert('Correct answer, moving on.');
                     handleNextQuestion();
                 } else {
-                    alert('Incorrect answer. Try again.');
+                    alert('נסי שוב');
                 }
             };
 
@@ -154,7 +153,7 @@
                 <div>
                     <h1>Quiz App</h1>
                     <div>
-                        <p>{question}</p>
+                        <p dir="rtl">{question}</p>
                         {showAnswer && (<input
                             type="text"
                             value={userAnswer}

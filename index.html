@@ -80,11 +80,8 @@
             const getCSVData = async () => {
                 const sheetLink = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSyb9U4L_Gh6XMmNiXkOeV-WEr1mGXnf6ol96iP50V0ATnMhzGLLwoelPlwtvV7vmqnS6ikH5_1ciOr/pub?output=csv";
                 const url = 'https://corsproxy.io/?' + encodeURIComponent(sheetLink);
-                console.debug(`Making request to ${url}`);
                 const response = await fetch(url);
-                console.error(response);
                 const data = response.text();
-                console.error(data);
                 return data;
             }
 
@@ -118,13 +115,12 @@
             const fetchQuestion = async (newquestionId) => {
                 try {
                     const csvdata = parseCSV(await getCSVData());
-                    // if (csvdata.length <= newquestionId) {
-                    //     setQuestion("You're all done!");
-                    //     setShowAnswer(false);
-                    //     return;
-                    // }
+                    if (csvdata.length <= newquestionId) {
+                        setQuestion("You're all done!");
+                        setShowAnswer(false);
+                        return;
+                    }
                     const currentdata = csvdata[newquestionId];
-                    console.error(currentdata);
                     setQuestion(currentdata.question);
                     setAnswer(currentdata.answer);
                     setUserAnswer('');

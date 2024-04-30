@@ -56,10 +56,51 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            /* Adjust the width as needed */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modal-message" dir="rtl"></p>
+        </div>
+    </div>
     <div id="root"></div>
     <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
@@ -123,7 +164,7 @@
                         setOnlineData(csvdata);
                     }
                     if (csvdata.length <= newquestionId) {
-                        setQuestion("סיימת!");
+                        setQuestion("כל הכבוד! המפתח נמצא בפריזר, בהצלחה");
                         setShowAnswer(false);
                         return;
                     }
@@ -145,7 +186,15 @@
                 if (userAnswer.toLowerCase() === answer.toLowerCase()) {
                     handleNextQuestion();
                 } else {
-                    alert('נסי שוב');
+                    const modal = document.getElementById('modal');
+                    const modalMessage = document.getElementById('modal-message');
+                    modalMessage.innerText = 'נסי שוב';
+                    modal.style.display = 'block';
+
+                    const closeButton = document.getElementsByClassName('close')[0];
+                    closeButton.onclick = function () {
+                        modal.style.display = 'none';
+                    };
                 }
             };
 
@@ -158,7 +207,7 @@
 
             return (
                 <div>
-                    <h1 dir="rtl">משחק יומהולדת</h1>
+                    <h1 dir="rtl">משחק היומולדת</h1>
                     <div>
                         <p dir="rtl">{question}</p>
                         {showAnswer && (<input

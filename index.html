@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz App</title>
+    <title>משחק היומהולדת</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -69,8 +69,9 @@
             const [question, setQuestion] = React.useState('');
             const [answer, setAnswer] = React.useState('');
             const [userAnswer, setUserAnswer] = React.useState('');
+            const [onlineData, setOnlineData] = React.useState('');
             const [showAnswer, setShowAnswer] = React.useState(true);
-            const [questionId, setQuestionId] = React.useState(1); // Track the current question ID
+            const [questionId, setQuestionId] = React.useState(1);
 
             React.useEffect(() => {
                 fetchQuestion(0);
@@ -80,7 +81,9 @@
             const getCSVData = async () => {
                 const sheetLink = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSyb9U4L_Gh6XMmNiXkOeV-WEr1mGXnf6ol96iP50V0ATnMhzGLLwoelPlwtvV7vmqnS6ikH5_1ciOr/pub?output=csv";
                 const url = 'https://corsproxy.io/?' + encodeURIComponent(sheetLink);
+                console.log("Downloading data");
                 const response = await fetch(url);
+
                 const data = response.text();
                 return data;
             }
@@ -114,7 +117,11 @@
 
             const fetchQuestion = async (newquestionId) => {
                 try {
-                    const csvdata = parseCSV(await getCSVData());
+                    var csvdata = onlineData;
+                    if (csvdata == '') {
+                        csvdata = parseCSV(await getCSVData());
+                        setOnlineData(csvdata);
+                    }
                     if (csvdata.length <= newquestionId) {
                         setQuestion("סיימת!");
                         setShowAnswer(false);
